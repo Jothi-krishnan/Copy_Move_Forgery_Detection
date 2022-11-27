@@ -47,10 +47,6 @@ Feature 6: Function C for blue pixel values
 Feature 7: Function C for green pixel values
 
 ### Resources
-
-- Solution URL: [My Github Repository](https://github.com/Jothi-krishnan/FEM_junior01)
-- Live Site URL: [Live Website](https://jothi-krishnan.github.io/FEM_junior01/)
-
 We use two reference papers to aid us:
     1. https://ieeexplore.ieee.org/document/1699948- This paper outlines the Duplication detection algorithm we use in our project. 
     2. https://www.semanticscholar.org/paper/Exposing-Digital-Forgeries-by-Detecting-Duplicated-Popescu-Farid/b888c1b19014fe5663fd47703edbcb1d6e4124ab- This paper outlines the inspiration for our feature extraction before performing PCA on the extractedd features. 
