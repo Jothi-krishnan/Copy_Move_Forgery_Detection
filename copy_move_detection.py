@@ -1,6 +1,7 @@
 from sub_block import subBlock
 
 from PIL import Image
+from threading import Thread
 import numpy as np
 import imageio
 import tqdm
@@ -101,7 +102,7 @@ class CM_Detection(object):
                     rgb_block = self.img.crop((x, y, x + self.block_size, y + self.block_size))
                     grayscale_block = self.grayscale_img.crop((x, y, x + self.block_size, y + self.block_size))
 
-                    img_block = subBlock(grayscale_block, rgb_block, x, y, self.block_size)
+                    img_block = subBlock(grayscale_block, rgb_block, x, y, self.block_size)      
                     self.features.append_block(img_block.compute_block_data())      # calculated and storing the feature vector in the object of Box() features.
 
         else:
@@ -109,6 +110,7 @@ class CM_Detection(object):
                 for y in range(blocks_along_vertical + 1):
                     grayscale_block = self.img.crop((x, y, x + self.block_size, y + self.block_size))
                     img_block = subBlock(grayscale_block, None, x, y, self.block_size)
+                    # curr_block = Thread(target=img_block.compute_block_data, args=()).start()
                     self.features.append_block(img_block.compute_block_data())      # calculated and storing the feature vector in the object of Box() features.
                         
 
@@ -226,43 +228,46 @@ class CM_Detection(object):
                 if attacks_img[x, y] == 255 and self.check_location(attacks_img, x, y) == True:
 
                     # creating the edge line, respectively left-upper, right-upper, left-down, right-down
+                    line_color = [255, 0, 0]
                     if attacks_img[x - 1, y] == 0 and attacks_img[x, y - 1] == 0 and attacks_img[x - 1, y - 1] == 0:
-                        marked_img[x - 2:x, y, 1] = 255
-                        marked_img[x, y - 2:y, 1] = 255
-                        marked_img[x - 2:x, y - 2:y, 1] = 255
+                        marked_img[x - 2:x, y] = line_color
+                        marked_img[x, y - 2:y] = line_color
+                        marked_img[x - 2:x, y - 2:y] = line_color
                     elif attacks_img[x + 1, y] == 0 and attacks_img[x, y - 1] == 0 and attacks_img[x + 1, y - 1] == 0:
-                        marked_img[x + 1:x + 3, y, 1] = 255
-                        marked_img[x, y - 2:y, 1] = 255
-                        marked_img[x + 1:x + 3, y - 2:y, 1] = 255
+                        marked_img[x + 1:x + 3, y] = line_color
+                        marked_img[x, y - 2:y] = line_color
+                        marked_img[x + 1:x + 3, y - 2:y] = line_color
                     elif attacks_img[x - 1, y] == 0 and attacks_img[x, y + 1] == 0 and attacks_img[x - 1, y + 1] == 0:
-                        marked_img[x - 2:x, y, 1] = 255
-                        marked_img[x, y + 1:y + 3, 1] = 255
-                        marked_img[x - 2:x, y + 1:y + 3, 1] = 255
+                        marked_img[x - 2:x, y] = line_color
+                        marked_img[x, y + 1:y + 3] = line_color
+                        marked_img[x - 2:x, y + 1:y + 3] = line_color
                     elif attacks_img[x + 1, y] == 0 and attacks_img[x, y + 1] == 0 and attacks_img[x + 1, y + 1] == 0:
-                        marked_img[x + 1:x + 3, y, 1] = 255
-                        marked_img[x, y + 1:y + 3, 1] = 255
-                        marked_img[x + 1:x + 3, y + 1:y + 3, 1] = 255
+                        marked_img[x + 1:x + 3, y] = line_color
+                        marked_img[x, y + 1:y + 3] = line_color
+                        marked_img[x + 1:x + 3, y + 1:y + 3] = line_color
 
                     # creating the straigh line, respectively upper, down, left, right line
                     elif attacks_img[x, y + 1] == 0:
-                        marked_img[x, y + 1:y + 3, 1] = 255
+                        marked_img[x, y + 1:y + 3] = line_color
                     elif attacks_img[x, y - 1] == 0:
-                        marked_img[x, y - 2:y, 1] = 255
+                        marked_img[x, y - 2:y] = line_color
                     elif attacks_img[x - 1, y] == 0:
-                        marked_img[x - 2:x, y, 1] = 255
+                        marked_img[x - 2:x, y] = line_color
                     elif attacks_img[x + 1, y] == 0:
-                        marked_img[x + 1:x + 3, y, 1] = 255
+                        marked_img[x + 1:x + 3, y] = line_color
                     
         
         print("Reconstructing Image....")
         timestamp = time.strftime("%Y%m%d_%H%M%S")
 
-        attacked_img_file_path = self.img_output_path / (timestamp + "_attacked_" + self.img_name)  #the path of the attacked image
-        marked_img_file_path = self.img_output_path / (timestamp + "_marked_" + self.img_name)      #the path of the mared image
+        attacked_img_file_path = self.img_output_path + timestamp + "_attacked_" + self.img_name  #the path of the attacked image
+        marked_img_file_path = self.img_output_path + timestamp + "_marked_" + self.img_name      #the path of the mared image
 
         #This makes these images in the given path
         imageio.imwrite(attacked_img_file_path, attacks_img)
         imageio.imwrite(marked_img_file_path, marked_img)
+
+
 
         return marked_img_file_path
 

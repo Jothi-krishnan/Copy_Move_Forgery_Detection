@@ -80,20 +80,20 @@ class subBlock(object):
                 else:
                     c4_part2 += self.grayscale_values[x, y]
                #compute c5
-                if y <= self.block_size / 2:
-                    c5_part1 += r
+                if x <= self.block_size / 2:
+                    c5_part1 += self.grayscale_values[x, y]
                 else:
-                    c5_part2 += r
+                    c5_part2 += self.grayscale_values[x, y]
                 #compute c6
-                if y <= self.block_size / 2:
-                    c6_part1 += g
+                if x - y >= 0:
+                    c6_part1 += self.grayscale_values[x, y]
                 else:
-                    c6_part2 += g
+                    c6_part2 += self.grayscale_values[x, y]
                 #compute c7
-                if y <= self.block_size / 2:
-                    c7_part1 += b
+                if x + y <= self.block_size:
+                    c7_part1 += self.grayscale_values[x, y]
                 else:
-                    c7_part2 += b
+                    c7_part2 += self.grayscale_values[x, y]
 
         c4 = float(c4_part1)/float(c4_part1 + c4_part2)
         c5 = float(c5_part1)/float(c5_part1 + c5_part2)
