@@ -15,13 +15,11 @@ This is a group project of the course Digital Image Processing done by,
 - [Outputs](#output)
 
 ## Overview
----
 This is the implementation on a python script which detects Copy-Move forgery on images. 
 
 We use overlapping blocks of 32*32 pixels (default size) and then extract 7 features using arithmetic operations and 3 features using Principal Component Analysis (PCA). We then sort the resulting arrays in lexographical order and locate similar arrays. We then find the distance between these blocks on the original image. The output is then shown as white blocks in the output image. Thus, we detect copy-move forgery in the images.
 
 ## Pre requisites
----
 
 Users should have the following installed before running the python script.
 
@@ -30,7 +28,7 @@ Users should have the following installed before running the python script.
 - See hover states for interactive elements
 
 ## Algorithm Used
----
+
 The implementation of our python code is as follows:
 
 First, using the overlapping blocks, we extract multiple features from each sub-block. These features are- 
@@ -49,26 +47,25 @@ Function C takes the pixel values of an image and sums up all the pixel values o
 - *Feature 7:* Function C for green pixel values
 
 ## Resources
----
+
 
 We use two reference papers to aid us:
     1. https://ieeexplore.ieee.org/document/1699948- This paper outlines the Duplication detection algorithm we use in our project. 
     2. https://www.semanticscholar.org/paper/Exposing-Digital-Forgeries-by-Detecting-Duplicated-Popescu-Farid/b888c1b19014fe5663fd47703edbcb1d6e4124ab- This paper outlines the inspiration for our feature extraction before performing PCA on the extractedd features. 
 
 ## Inputs
----
 
 This is the input we provide to our program:
-![Input image](Inputs\threehundred_gcs500_copy_rb5.png "Input Image")
+![alt text](./Inputs/threehundred_gcs500_copy_rb5.png )
 
 ## Outputs
----
+
 This is the output that the program gives us:
-![Output image](Outputs\20221127_150658_marked_threehundred_gcs500_copy_rb5.png "Output Image")
-![Output image](Outputs\20221127_150658_attacked_threehundred_gcs500_copy_rb5.png "Output Image")
+![alt text](./Outputs/20221127_150658_marked_threehundred_gcs500_copy_rb5.png)
+![alt text](./Outputs/20221127_150658_attacked_threehundred_gcs500_copy_rb5.png)
 
 ## Running GUI version
----
+
 Steps to be followed are:
 
 1. Run `app.py`
